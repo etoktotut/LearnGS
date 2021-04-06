@@ -28,10 +28,18 @@ let amount2 = +prompt('Во сколько это обойдется?');
 let budgetMonth = money - (amount1 + amount2);
 
 let getStatusIncome = function (moneyPerDay) {
-    if (moneyPerDay >= 1200) { return 'У вас высокий уровень дохода'; }
-    else if (moneyPerDay >= 600) { return 'У вас средний уровень дохода'; }
-    else if (moneyPerDay >= 0) { return 'К сожалению у вас уровень дохода ниже среднего'; }
-    else { return 'Что то пошло не так'; }
+    if (moneyPerDay >= 1200) {
+        return 'У вас высокий уровень дохода';
+    }
+    else if (moneyPerDay >= 600) {
+        return 'У вас средний уровень дохода';
+    }
+    else if (moneyPerDay >= 0) {
+        return 'К сожалению у вас уровень дохода ниже среднего';
+    }
+    else {
+        return 'Что то пошло не так';
+    }
 };
 
 
