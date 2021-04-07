@@ -4,9 +4,9 @@ let isNumber = (n) => {
     return !isNaN(parseFloat(n)) && isFinite(n);
 };
 
-let money;
+let money = 0;
 const income = 'фриланс';
-let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 'кино, вино, девочки');
+let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 'Кино, Вино, Девочки').toLowerCase().split(',');
 let deposit = confirm('Есть ли у вас депозит в банке?');
 const mission = 1000000;
 const period = 12;
@@ -21,7 +21,9 @@ showTypeOf(income);
 showTypeOf(deposit);
 
 const start = function () {
-    do { money = prompt('Ваш месячный доход:'); }
+    do {
+        money = prompt('Ваш месячный доход:').trim();
+    }
     while (!isNumber(money));
 };
 
@@ -31,7 +33,7 @@ const getExpensesMonth = function () {
     for (let i = 0; i < 2; i++) {
         expenses[i] = prompt('Введите обязательную статью расходов?');
         do {
-            exp = prompt('Во сколько это обойдется?');
+            exp = prompt('Во сколько это обойдется?').trim();
         }
         while (!isNumber(exp));
         sum += +exp;
@@ -67,11 +69,11 @@ let expensesMonth = getExpensesMonth();
 let accumulatedMonth = getAccumulatedMonth(money, expensesMonth);
 let budgetDay = Math.floor(accumulatedMonth / 30);
 
-console.log('Доходы за месяц: ' + money);
+console.log('Доходы за месяц:' + money + 'руб.');
 console.log('Расходы за месяц: ' + expensesMonth);
-console.log('Возможные расходы (массив): ', addExpenses.split(','));
+console.log('Возможные расходы (массив): ', addExpenses);
 console.log('Статьи обязательных расходов (массив): ', expenses);
-console.log((getTargetMonth(mission, accumulatedMonth) >= 0) ?
+console.log((accumulatedMonth) > 0 ?
     'Цель будет достигнута за ' + getTargetMonth(mission, accumulatedMonth) + ' мес.' :
     'Цель не будет достигнута');
 console.log('Бюджет на день составляет: ' + budgetDay + ' руб.');
