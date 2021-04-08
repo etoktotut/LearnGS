@@ -1,81 +1,51 @@
 "use strict";
 
 let isNumber = (n) => {
-    return !isNaN(parseFloat(n)) && isFinite(n);
+    return !isNaN(parseFloat(n)) && isFinite(n) && (n > 0);
 };
 
-let money = 0;
-const income = 'фриланс';
-let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 'Кино, Вино, Девочки').toLowerCase().split(',');
-let deposit = confirm('Есть ли у вас депозит в банке?');
-const mission = 1000000;
-const period = 12;
-let expenses = [];
+let num = +prompt('Угадай число от 1 до 100').trim();
 
-let showTypeOf = function (data) {
-    console.log(data, typeof (data));
-};
+console.log(num);
 
-showTypeOf(money);
-showTypeOf(income);
-showTypeOf(deposit);
-
-const start = function () {
-    do {
-        money = prompt('Ваш месячный доход:').trim();
+const start = (num) => {
+    if (!isNumber(num)) {
+        num = + prompt('Введи число!');
+        start(num);
     }
-    while (!isNumber(money));
+    return num;
 };
 
-const getExpensesMonth = function () {
-    let sum = 0;
-    let exp;
-    for (let i = 0; i < 2; i++) {
-        expenses[i] = prompt('Введите обязательную статью расходов?');
-        do {
-            exp = prompt('Во сколько это обойдется?').trim();
+const checkSecret = (x) => {
+    const myCheck = (inp) => {
+        if (x === inp) {
+            alert('Поздравляю вы выиграли');
+            return true;
+        } else if (x > inp) {
+            alert('Загаданное число меньше');
+        } else if (x < inp) {
+            alert('Загаданное число больше');
         }
-        while (!isNumber(exp));
-        sum += +exp;
-    }
-    return sum;
+        return false;
+    };
+    return myCheck;
 };
 
-const getStatusIncome = function (moneyPerDay) {
-    if (moneyPerDay >= 1200) {
-        return 'У вас высокий уровень дохода';
-    }
-    else if (moneyPerDay >= 600) {
-        return 'У вас средний уровень дохода';
-    }
-    else if (moneyPerDay >= 0) {
-        return 'К сожалению у вас уровень дохода ниже среднего';
-    }
-    else {
-        return 'Что то пошло не так';
+
+let quest = checkSecret(18);
+const mainFunction = (num1) => {
+    if (!quest(start(num1))) {
+        mainFunction();
     }
 };
 
-const getAccumulatedMonth = function (mon, expMonth) {
-    return mon - expMonth;
-};
+mainFunction(num);
 
-const getTargetMonth = function (moneyTarget, moneyPerMonth) {
-    return Math.ceil(moneyTarget / moneyPerMonth);
-};
 
-start();
-let expensesMonth = getExpensesMonth();
-let accumulatedMonth = getAccumulatedMonth(money, expensesMonth);
-let budgetDay = Math.floor(accumulatedMonth / 30);
 
-console.log('Доходы за месяц:' + money + 'руб.');
-console.log('Расходы за месяц: ' + expensesMonth);
-console.log('Возможные расходы (массив): ', addExpenses);
-console.log('Статьи обязательных расходов (массив): ', expenses);
-console.log((accumulatedMonth) > 0 ?
-    'Цель будет достигнута за ' + getTargetMonth(mission, accumulatedMonth) + ' мес.' :
-    'Цель не будет достигнута');
-console.log('Бюджет на день составляет: ' + budgetDay + ' руб.');
-console.log(getStatusIncome(budgetDay));
+
+
+
+
+
 
