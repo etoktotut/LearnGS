@@ -1,7 +1,7 @@
 "use strict";
 
 const isNumber = (n) => {
-    return !isNaN(parseFloat(n)) && isFinite(n) && +n > 0 && +n <= 100;
+    return !isNaN(parseFloat(n)) && isFinite(n);
 };
 
 const startInputNumber = (mess) => {
@@ -19,7 +19,7 @@ const getGame = (x) => {
     const game = (mes) => {
         console.log(mes);
         let num = startInputNumber(mes);
-        if (!num) {
+        if (num === null) {
             return alert("Игра окончена");
         }
         if (num === x) {
