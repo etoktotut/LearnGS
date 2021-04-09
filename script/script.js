@@ -19,14 +19,20 @@ const getGame = (x) => {
     const game = (mes) => {
         console.log(mes);
         let num = startInputNumber(mes);
-        if (!num) { return alert("Игра окончена"); }
-        if (num === x) { return alert('Вы угадали'); }
-        if (num > x) { return game('Загаданное число больше'); }
-        else { return game('Загаданное число меньше'); }
+        if (!num) {
+            return alert("Игра окончена");
+        }
+        if (num === x) {
+            return alert('Вы угадали');
+        }
+        if (num > x) {
+            return game('Загаданное число больше');
+        }
+        return game('Загаданное число меньше');
+
     };
     return game;
 };
-
 
 const myGame = getGame(18);
 myGame("Введите число от 1 до 100");
