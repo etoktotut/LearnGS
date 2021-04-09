@@ -26,9 +26,9 @@ const getGame = (x) => {
             return alert('Вы угадали');
         }
         if (num > x) {
-            return game('Загаданное число больше');
+            return game('Загаданное число меньше');
         }
-        return game('Загаданное число меньше');
+        return game('Загаданное число больше');
 
     };
     return game;
