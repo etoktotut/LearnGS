@@ -7,7 +7,7 @@ const isNumber = (n) => {
 const startInputNumber = (mess) => {
     let num1 = prompt(mess);
     if (num1 === null) {
-        return false;
+        return null;
     }
     if (!isNumber(+num1)) {
         return startInputNumber("Введите число!");
@@ -17,7 +17,6 @@ const startInputNumber = (mess) => {
 
 const getGame = (x) => {
     const game = (mes) => {
-        console.log(mes);
         let num = startInputNumber(mes);
         if (num === null) {
             return alert("Игра окончена");
