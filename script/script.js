@@ -4,7 +4,9 @@ let isNumber = (n) => {
     return !isNaN(parseFloat(n)) && isFinite(n);
 };
 
-let isString = (s) => { return !isNumber(s) && s !== ''; };
+let isString = (s) => {
+    return !isNumber(s) && s !== '';
+};
 
 let money = 0;
 
@@ -36,7 +38,9 @@ let appData = {
 
         if (confirm('Есть ли у Вас дополнительный источник заработка?')) {
             let itemIncome, cashIncome;
-            do { itemIncome = prompt('Какой у Вас дополнительный заработок?', 'Курьерю').trim(); }
+            do {
+                itemIncome = prompt('Какой у Вас дополнительный заработок?', 'Курьерю').trim();
+            }
             while (!isString(itemIncome));
 
             do {
@@ -52,7 +56,9 @@ let appData = {
         appData.deposit = confirm('Есть ли у вас депозит в банке?');
         for (let i = 0; i < 2; i++) {
             let sumOfOrderedExpenses, orderedExpenses;
-            do { orderedExpenses = prompt('Введите обязательную статью расходов?', 'квартплата').trim(); }
+            do {
+                orderedExpenses = prompt('Введите обязательную статью расходов?', 'квартплата').trim();
+            }
             while (!isString(orderedExpenses));
             do {
                 sumOfOrderedExpenses = prompt('Во сколько это обойдется?', '10000');
@@ -95,9 +101,13 @@ let appData = {
 
     getInfoDeposit: function () {
         if (appData.deposit) {
-            do { appData.percentDeposit = prompt('Какой годовой процент?', '10'); }
+            do {
+                appData.percentDeposit = prompt('Какой годовой процент?', '10');
+            }
             while (!isNumber(appData.percentDeposit));
-            do { appData.moneyDeposit = prompt('Какая сумма заложена?', 10000); }
+            do {
+                appData.moneyDeposit = prompt('Какая сумма заложена?', 10000);
+            }
             while (!isNumber(appData.moneyDeposit));
         }
     },
