@@ -144,14 +144,16 @@ const btnSecondPlus = document.getElementsByTagName('button')[1];
 const depositCheck = document.querySelector('#deposit-check');
 const additionalIncomeItem1 = document.querySelectorAll('.additional_income-item')[0];
 const additionalIncomeItem2 = document.querySelectorAll('.additional_income-item')[1];
+additionalIncomeItem1.value = "Item1";
+additionalIncomeItem2.value = "Item2";
 // поля справа
 //const budget_month-value = document.getElementsByClassName('budget_month-value');
-const budgetDayValue = document.getElementsByClassName('budget_day-value');
-const expensesMonthValue = document.getElementsByClassName('expenses_month-value');
-const additionalIncomeValue = document.getElementsByClassName('additional_income-value');
-const additionalExpensesValue = document.getElementsByClassName('additional_expenses-value');
-const incomePeriodValue = document.getElementsByClassName('income_period-value');
-const targetMonthValue = document.getElementsByClassName('target_month-value');
+const budgetDayValue = document.getElementsByClassName('budget_day-value')[0];
+const expensesMonthValue = document.getElementsByClassName('expenses_month-value')[0];
+const additionalIncomeValue = document.getElementsByClassName('additional_income-value')[0];
+const additionalExpensesValue = document.getElementsByClassName('additional_expenses-value')[0];
+const incomePeriodValue = document.getElementsByClassName('income_period-value')[0];
+const targetMonthValue = document.getElementsByClassName('target_month-value')[0];
 
 // оставшиеся поля
 const salaryAmount = document.querySelector('.salary-amount');
