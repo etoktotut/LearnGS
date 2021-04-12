@@ -144,8 +144,6 @@ const btnSecondPlus = document.getElementsByTagName('button')[1];
 const depositCheck = document.querySelector('#deposit-check');
 const additionalIncomeItem1 = document.querySelectorAll('.additional_income-item')[0];
 const additionalIncomeItem2 = document.querySelectorAll('.additional_income-item')[1];
-additionalIncomeItem1.value = "Item1";
-additionalIncomeItem2.value = "Item2";
 // поля справа
 //const budget_month-value = document.getElementsByClassName('budget_month-value')[0];
 const budgetDayValue = document.getElementsByClassName('budget_day-value')[0];
