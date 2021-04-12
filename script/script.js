@@ -147,7 +147,7 @@ const additionalIncomeItem2 = document.querySelectorAll('.additional_income-item
 additionalIncomeItem1.value = "Item1";
 additionalIncomeItem2.value = "Item2";
 // поля справа
-//const budget_month-value = document.getElementsByClassName('budget_month-value');
+//const budget_month-value = document.getElementsByClassName('budget_month-value')[0];
 const budgetDayValue = document.getElementsByClassName('budget_day-value')[0];
 const expensesMonthValue = document.getElementsByClassName('expenses_month-value')[0];
 const additionalIncomeValue = document.getElementsByClassName('additional_income-value')[0];
@@ -157,6 +157,7 @@ const targetMonthValue = document.getElementsByClassName('target_month-value')[0
 
 // оставшиеся поля
 const salaryAmount = document.querySelector('.salary-amount');
+const incomeItems = document.querySelector('.income-items');
 const incomeTitle = document.querySelector('.income-title');
 const incomeAmount = document.querySelector('.income-amount');
 const expensesTitle = document.querySelector('.expenses-title');
