@@ -87,14 +87,11 @@ let appData = {
     getStatusIncome: function () {
         if (appData.budgetDay >= 1200) {
             return 'У вас высокий уровень дохода';
-        }
-        else if (appData.budgetDay >= 600) {
+        } else if (appData.budgetDay >= 600) {
             return 'У вас средний уровень дохода';
-        }
-        else if (appData.budgetDay >= 0) {
+        } else if (appData.budgetDay >= 0) {
             return 'К сожалению у вас уровень дохода ниже среднего';
-        }
-        else {
+        } else {
             return 'Что то пошло не так';
         }
     },
@@ -140,3 +137,37 @@ for (let key in appData.expenses) {
     stringExpensesForConsole += key[0].toUpperCase() + key.slice(1) + ", ";
 }
 console.log(stringExpensesForConsole);
+
+const startButton = document.getElementById('start');
+const btnFirstPlus = document.getElementsByTagName('button')[0];
+const btnSecondPlus = document.getElementsByTagName('button')[1];
+const depositCheck = document.querySelector('#deposit-check');
+const additionalIncomeItem1 = document.querySelectorAll('.additional_income-item')[0];
+const additionalIncomeItem2 = document.querySelectorAll('.additional_income-item')[1];
+// поля справа
+//const budget_month-value = document.getElementsByClassName('budget_month-value');
+const budgetDayValue = document.getElementsByClassName('budget_day-value');
+const expensesMonthValue = document.getElementsByClassName('expenses_month-value');
+const additionalIncomeValue = document.getElementsByClassName('additional_income-value');
+const additionalExpensesValue = document.getElementsByClassName('additional_expenses-value');
+const incomePeriodValue = document.getElementsByClassName('income_period-value');
+const targetMonthValue = document.getElementsByClassName('target_month-value');
+
+// оставшиеся поля
+const salaryAmount = document.querySelector('.salary-amount');
+const incomeTitle = document.querySelector('.income-title');
+const incomeAmount = document.querySelector('.income-amount');
+const expensesTitle = document.querySelector('.expenses-title');
+const expensesAmount = document.querySelector('.expenses-amount');
+const additionalExpensesItem = document.querySelector('.additional_expenses-item');
+// const depositAmount = document.querySelector('.deposit-amount');
+// const depositPercent = document.querySelector('.deposit-percent');
+// const depositBank = document.querySelector('.deposit-bank');
+const targetAmount = document.querySelector('.target-amount');
+const periodSelect = document.querySelector('.period-select');
+
+
+
+
+
+
