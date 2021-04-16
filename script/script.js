@@ -112,9 +112,7 @@ let appData = {
                 appData.income[itemIncome] = +cashIncome;
             }
         });
-        for (let key in appData.income) {
-            appData.incomeMonth += +appData.income[key];
-        }
+
     },
 
     getIncomeMonth: function () {
