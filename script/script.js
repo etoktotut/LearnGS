@@ -194,9 +194,9 @@ let appData = {
 
 salaryAmount.addEventListener('input', function () {
     if (salaryAmount.value.trim() !== '' && isNumber(salaryAmount.value)) {
-        startButton.disabled = false;
+        startButton.removeAttribute('disabled');
     } else {
-        startButton.disabled = true;
+        startButton.setAttribute('disabled', 'true');
     }
 });
 
@@ -206,4 +206,4 @@ periodSelect.addEventListener('input', function () {
     periodAmount.textContent = periodSelect.value;
 });
 startButton.addEventListener('click', appData.start);
-startButton.disabled = true; //поле зарплаты пустое, нам нечего рассчитывать
+startButton.setAttribute('disabled', 'true'); //поле зарплаты пустое, нам нечего рассчитывать
