@@ -30,15 +30,6 @@ const targetAmount = document.querySelector('.target-amount');
 const periodSelect = document.querySelector('.period-select');
 const periodAmount = document.querySelector('.period-amount');
 
-let isNumber = (n) => {
-    return !isNaN(parseFloat(n)) && isFinite(n);
-};
-
-let isString = (s) => {
-    return !isNumber(s) && s !== '';
-};
-
-
 const AppData = function () {
     this.income = {};
     this.incomeMonth = 0;
@@ -53,8 +44,6 @@ const AppData = function () {
     this.budgetMonth = 0;
     this.expensesMonth = 0;
 };
-
-
 
 AppData.prototype.start = function () {
     this.budget = +salaryAmount.value;
@@ -233,11 +222,11 @@ AppData.prototype.getInfoDeposit = function () {
         do {
             this.percentDeposit = prompt('Какой годовой процент?', '10');
         }
-        while (!isNumber(this.percentDeposit));
+        while (!this.isNumber(this.percentDeposit));
         do {
             this.moneyDeposit = prompt('Какая сумма заложена?', 10000);
         }
-        while (!isNumber(this.moneyDeposit));
+        while (!this.isNumber(this.moneyDeposit));
     }
 };
 
@@ -245,10 +234,14 @@ AppData.prototype.calcSavedMoney = function () {
     return this.budgetMonth * periodSelect.value;
 };
 
+AppData.prototype.isNumber = function (n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+};
+
 AppData.prototype.eventsListeners = function () {
     const _this = this;
     salaryAmount.addEventListener('input', function () {
-        if (salaryAmount.value.trim() !== '' && isNumber(salaryAmount.value)) {
+        if (salaryAmount.value.trim() !== '' && _this.isNumber(salaryAmount.value)) {
             startButton.removeAttribute('disabled');
         } else {
             startButton.setAttribute('disabled', 'true');
