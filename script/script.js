@@ -1,6 +1,7 @@
 "use strict";
 
 const startButton = document.getElementById('start');
+const btnReset = document.getElementById('cancel');
 const btnIncomePlus = document.getElementsByTagName('button')[0];
 const btnExpensesPlus = document.getElementsByTagName('button')[1];
 const depositCheck = document.querySelector('#deposit-check');
@@ -28,8 +29,6 @@ const additionalExpensesItem = document.querySelector('.additional_expenses-item
 const targetAmount = document.querySelector('.target-amount');
 const periodSelect = document.querySelector('.period-select');
 const periodAmount = document.querySelector('.period-amount');
-
-let btnReset;
 
 let isNumber = (n) => {
     return !isNaN(parseFloat(n)) && isFinite(n);
@@ -68,11 +67,11 @@ let appData = {
     },
 
     blockAndShowBtnReset: function () {
-        document.querySelectorAll('input[type="text"]').forEach(function (item) {
+        document.querySelectorAll('.data input[type="text"]').forEach(function (item) {
             item.setAttribute('disabled', 'true');
         });
-        startButton.style.display = 'none';
-        btnReset.style.display = '';
+        startButton.setAttribute('style', 'display: none;');
+        btnReset.setAttribute('style', 'display: block;');
         btnReset.removeAttribute('disabled');
     },
 
@@ -80,7 +79,7 @@ let appData = {
         //кнопки
         btnReset.setAttribute('disabled', 'true');
         btnReset.setAttribute('style', 'display: none;');
-        startButton.setAttribute('style', 'display: ;');
+        startButton.setAttribute('style', 'display: block;');
         startButton.setAttribute('disabled', 'true');
         //appData
         this.income = {};
@@ -238,17 +237,6 @@ let appData = {
 
 };
 
-//добавление кнопки RESET
-const btnResetAdd = () => {
-    let btnStartClone = startButton.cloneNode('true');
-    btnStartClone.style.display = 'none';
-    btnStartClone.className = 'button-reset';
-    btnStartClone.textContent = 'RESET';
-    startButton.insertAdjacentElement('beforebegin', btnStartClone);
-    btnReset = document.querySelector('.button-reset');
-    btnReset.addEventListener('click', appData.reset.bind(appData));
-};
-
 salaryAmount.addEventListener('input', function () {
     if (salaryAmount.value.trim() !== '' && isNumber(salaryAmount.value)) {
         startButton.removeAttribute('disabled');
@@ -263,6 +251,6 @@ periodSelect.addEventListener('input', function () {
     periodAmount.textContent = periodSelect.value;
 });
 
-btnResetAdd();
+btnReset.addEventListener('click', appData.reset.bind(appData));
 startButton.addEventListener('click', appData.start.bind(appData));
 startButton.setAttribute('disabled', 'true'); //поле зарплаты пустое, нам нечего рассчитывать
