@@ -29,6 +29,35 @@ const targetAmount = document.querySelector('.target-amount');
 const periodSelect = document.querySelector('.period-select');
 const periodAmount = document.querySelector('.period-amount');
 
+//для "Усложненки"
+const rusLetters = 'аAбБвВгГдДеЕёЁжЖзЗиЙкКлЛмМнНоОпПрРсСтТуУфФхХцЦчЧшШщЩэыЫЭюЮяЯ';
+const punctuationSigns = '.,;:?!-()[]" ';
+const digits = '0123456789';
+
+
+const pholderName = function () {
+    document.querySelectorAll('.data [placeholder="Наименование"]').forEach(function (item) {
+        item.addEventListener('input', function (event) {
+            if (!rusLetters.includes(event.data) && (event.data !== null) && !punctuationSigns.includes(event.data)) {
+                let pos = item.value.indexOf(event.data);
+                item.value = item.value.slice(0, pos) + item.value.slice(pos + 1);
+            }
+        });
+    });
+};
+
+const pholderSum = function () {
+    document.querySelectorAll('.data [placeholder="Сумма"]').forEach(function (item) {
+        item.addEventListener('input', function (event) {
+            if (!digits.includes(event.data) && (event.data !== null)) {
+                let pos = item.value.indexOf(event.data);
+                item.value = item.value.slice(0, pos) + item.value.slice(pos + 1);
+            }
+        });
+    });
+};
+
+
 let isNumber = (n) => {
     return !isNaN(parseFloat(n)) && isFinite(n);
 };
@@ -78,12 +107,17 @@ let appData = {
     },
 
     addExpensesBlock: function () {
-        const cloneExpensesItem = expensesItems[0].cloneNode(true); //см роедыдущий урок
+        const cloneExpensesItem = expensesItems[0].cloneNode(true);
+        cloneExpensesItem.querySelectorAll('input').forEach(function (item) {
+            item.value = '';
+        });
         expensesItems[0].parentNode.insertBefore(cloneExpensesItem, btnExpensesPlus);
         expensesItems = document.querySelectorAll('.expenses-items');
         if (expensesItems.length === 3) {
             btnExpensesPlus.style.display = 'none';
         }
+        pholderName();
+        pholderSum();
     },
     getExpenses: function () {
         expensesItems.forEach(function (item) {
@@ -97,11 +131,16 @@ let appData = {
 
     addIncomeBlock: function () {
         const cloneIncomeItem = incomeItems[0].cloneNode(true);
+        cloneIncomeItem.querySelectorAll('input').forEach(function (item) {
+            item.value = '';
+        });
         incomeItems[0].parentNode.insertBefore(cloneIncomeItem, btnIncomePlus);
         incomeItems = document.querySelectorAll('.income-items');
         if (incomeItems.length === 3) {
             btnIncomePlus.style.display = 'none';
         }
+        pholderName();
+        pholderSum();
     },
 
     getIncome: function () {
@@ -204,4 +243,6 @@ periodSelect.addEventListener('input', function () {
     periodAmount.textContent = periodSelect.value;
 });
 startButton.addEventListener('click', appData.start);
-startButton.setAttribute('disabled', 'true'); //поле зарплаты пустое, нам нечего рассчитывать
+startButton.setAttribute('disabled', 'true');
+pholderName();
+pholderSum();
