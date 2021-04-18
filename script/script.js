@@ -30,32 +30,37 @@ const periodSelect = document.querySelector('.period-select');
 const periodAmount = document.querySelector('.period-amount');
 
 //для "Усложненки"
-const rusLetters = 'аАбБвВгГдДеЕёЁжЖзЗиЙкКлЛмМнНоОпПрРсСтТуУфФхХцЦчЧшШщЩэыЫЭюЮяЯ';
-const punctuationSigns = '.,;:?!-()[]" ';
-const digits = '0123456789';
-let re = "/[^\.\,\-\_\'\"\@\?\!\:\$ a-zA-Z0-9А-Яа-я]/u";
-
+const rusLetPunct = /[.\,\;\:\-_\[\]\(\)\'\"\?!\:\а-яёА-ЯЁ]/g;
+const digits = /\d/g;
 
 const checkRusLetters = function (event, item) {
-    if (!rusLetters.includes(event.data) && (event.data !== null) && !punctuationSigns.includes(event.data)) {
-        item.value = item.value.replace(event.data, '');
+    if (event.data) {
+        if (!event.data.match(rusLetPunct)) {
+            item.value = item.value.replace(event.data, '');
+        }
     }
 };
 const checkDigits = function (event, item) {
-    if (!digits.includes(event.data) && (event.data !== null)) {
-        item.value = item.value.replace(event.data, '');
+    if (event.data) {
+        if (!event.data.match(digits)) {
+            item.value = item.value.replace(event.data, '');
+        }
     }
 };
 
 const pholderName = function () {
     document.querySelectorAll('.data [placeholder="Наименование"]').forEach(function (item) {
-        item.addEventListener('input', function (event) { checkRusLetters(event, item); });
+        item.addEventListener('input', function (event) {
+            checkRusLetters(event, item);
+        });
     });
 };
 
 const pholderSum = function () {
     document.querySelectorAll('.data [placeholder="Сумма"]').forEach(function (item) {
-        item.addEventListener('input', function (event) { checkDigits(event, item); });
+        item.addEventListener('input', function (event) {
+            checkDigits(event, item);
+        });
     });
 };
 
@@ -115,8 +120,12 @@ let appData = {
         const sumInput = cloneExpensesItem.querySelector('[placeholder="Сумма"]');
         nameInput.value = '';
         sumInput.value = '';
-        nameInput.addEventListener('input', function (event) { checkRusLetters(event, nameInput); });
-        sumInput.addEventListener('input', function (event) { checkDigits(event, sumInput); });
+        nameInput.addEventListener('input', function (event) {
+            checkRusLetters(event, nameInput);
+        });
+        sumInput.addEventListener('input', function (event) {
+            checkDigits(event, sumInput);
+        });
 
         expensesItems[0].parentNode.insertBefore(cloneExpensesItem, btnExpensesPlus);
         expensesItems = document.querySelectorAll('.expenses-items');
@@ -141,8 +150,12 @@ let appData = {
         const sumInput = cloneIncomeItem.querySelector('[placeholder="Сумма"]');
         nameInput.value = '';
         sumInput.value = '';
-        nameInput.addEventListener('input', function (event) { checkRusLetters(event, nameInput); });
-        sumInput.addEventListener('input', function (event) { checkDigits(event, sumInput); });
+        nameInput.addEventListener('input', function (event) {
+            checkRusLetters(event, nameInput);
+        });
+        sumInput.addEventListener('input', function (event) {
+            checkDigits(event, sumInput);
+        });
 
         incomeItems[0].parentNode.insertBefore(cloneIncomeItem, btnIncomePlus);
         incomeItems = document.querySelectorAll('.income-items');
