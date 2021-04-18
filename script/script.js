@@ -32,7 +32,7 @@ const periodAmount = document.querySelector('.period-amount');
 //для "Усложненки"
 const withotEngSymbols = function (elem) {
     elem.addEventListener('input', function (event) {
-        elem.value = elem.value.replace(/[a-zA-Z]/g, '');
+        elem.value = elem.value.replace(/[^а-яёА-ЯЁ\.\;\,\:\-_\?\!\(\)\ \"]/gi, '');
     });
 };
 const approvedDigits = function (elem) {
