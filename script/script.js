@@ -30,30 +30,32 @@ const periodSelect = document.querySelector('.period-select');
 const periodAmount = document.querySelector('.period-amount');
 
 //для "Усложненки"
-const rusLetters = 'аAбБвВгГдДеЕёЁжЖзЗиЙкКлЛмМнНоОпПрРсСтТуУфФхХцЦчЧшШщЩэыЫЭюЮяЯ';
+const rusLetters = 'аАбБвВгГдДеЕёЁжЖзЗиЙкКлЛмМнНоОпПрРсСтТуУфФхХцЦчЧшШщЩэыЫЭюЮяЯ';
 const punctuationSigns = '.,;:?!-()[]" ';
 const digits = '0123456789';
+let re = "/[^\.\,\-\_\'\"\@\?\!\:\$ a-zA-Z0-9А-Яа-я]/u";
 
+
+const checkRusLetters = function (event, item) {
+    if (!rusLetters.includes(event.data) && (event.data !== null) && !punctuationSigns.includes(event.data)) {
+        item.value = item.value.replace(event.data, '');
+    }
+};
+const checkDigits = function (event, item) {
+    if (!digits.includes(event.data) && (event.data !== null)) {
+        item.value = item.value.replace(event.data, '');
+    }
+};
 
 const pholderName = function () {
     document.querySelectorAll('.data [placeholder="Наименование"]').forEach(function (item) {
-        item.addEventListener('input', function (event) {
-            if (!rusLetters.includes(event.data) && (event.data !== null) && !punctuationSigns.includes(event.data)) {
-                let pos = item.value.indexOf(event.data);
-                item.value = item.value.slice(0, pos) + item.value.slice(pos + 1);
-            }
-        });
+        item.addEventListener('input', function (event) { checkRusLetters(event, item); });
     });
 };
 
 const pholderSum = function () {
     document.querySelectorAll('.data [placeholder="Сумма"]').forEach(function (item) {
-        item.addEventListener('input', function (event) {
-            if (!digits.includes(event.data) && (event.data !== null)) {
-                let pos = item.value.indexOf(event.data);
-                item.value = item.value.slice(0, pos) + item.value.slice(pos + 1);
-            }
-        });
+        item.addEventListener('input', function (event) { checkDigits(event, item); });
     });
 };
 
@@ -108,16 +110,19 @@ let appData = {
 
     addExpensesBlock: function () {
         const cloneExpensesItem = expensesItems[0].cloneNode(true);
-        cloneExpensesItem.querySelectorAll('input').forEach(function (item) {
-            item.value = '';
-        });
+
+        const nameInput = cloneExpensesItem.querySelector('[placeholder="Наименование"]');
+        const sumInput = cloneExpensesItem.querySelector('[placeholder="Сумма"]');
+        nameInput.value = '';
+        sumInput.value = '';
+        nameInput.addEventListener('input', function (event) { checkRusLetters(event, nameInput); });
+        sumInput.addEventListener('input', function (event) { checkDigits(event, sumInput); });
+
         expensesItems[0].parentNode.insertBefore(cloneExpensesItem, btnExpensesPlus);
         expensesItems = document.querySelectorAll('.expenses-items');
         if (expensesItems.length === 3) {
             btnExpensesPlus.style.display = 'none';
         }
-        pholderName();
-        pholderSum();
     },
     getExpenses: function () {
         expensesItems.forEach(function (item) {
@@ -131,16 +136,19 @@ let appData = {
 
     addIncomeBlock: function () {
         const cloneIncomeItem = incomeItems[0].cloneNode(true);
-        cloneIncomeItem.querySelectorAll('input').forEach(function (item) {
-            item.value = '';
-        });
+
+        const nameInput = cloneIncomeItem.querySelector('[placeholder="Наименование"]');
+        const sumInput = cloneIncomeItem.querySelector('[placeholder="Сумма"]');
+        nameInput.value = '';
+        sumInput.value = '';
+        nameInput.addEventListener('input', function (event) { checkRusLetters(event, nameInput); });
+        sumInput.addEventListener('input', function (event) { checkDigits(event, sumInput); });
+
         incomeItems[0].parentNode.insertBefore(cloneIncomeItem, btnIncomePlus);
         incomeItems = document.querySelectorAll('.income-items');
         if (incomeItems.length === 3) {
             btnIncomePlus.style.display = 'none';
         }
-        pholderName();
-        pholderSum();
     },
 
     getIncome: function () {
