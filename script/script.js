@@ -30,47 +30,19 @@ const periodSelect = document.querySelector('.period-select');
 const periodAmount = document.querySelector('.period-amount');
 
 //для "Усложненки"
-const rusLetPunct = /[.\,\;\:\-_\[\]\(\)\'\"\?!\:\а-яёА-ЯЁ]/g;
-const digits = /\d/g;
-
-const checkRusLetters = function (event, item) {
-    if (event.data) {
-        if (!event.data.match(rusLetPunct)) {
-            item.value = item.value.replace(event.data, '');
-        }
-    }
-};
-const checkDigits = function (event, item) {
-    if (event.data) {
-        if (!event.data.match(digits)) {
-            item.value = item.value.replace(event.data, '');
-        }
-    }
-};
-
-const pholderName = function () {
-    document.querySelectorAll('.data [placeholder="Наименование"]').forEach(function (item) {
-        item.addEventListener('input', function (event) {
-            checkRusLetters(event, item);
-        });
+const withotEngSymbols = function (elem) {
+    elem.addEventListener('input', function (event) {
+        elem.value = elem.value.replace(/[a-zA-Z]/g, '');
     });
 };
-
-const pholderSum = function () {
-    document.querySelectorAll('.data [placeholder="Сумма"]').forEach(function (item) {
-        item.addEventListener('input', function (event) {
-            checkDigits(event, item);
-        });
+const approvedDigits = function (elem) {
+    elem.addEventListener('input', function (event) {
+        elem.value = elem.value.replace(/\D/g, '');
     });
 };
-
 
 let isNumber = (n) => {
     return !isNaN(parseFloat(n)) && isFinite(n);
-};
-
-let isString = (s) => {
-    return !isNumber(s) && s !== '';
 };
 
 let appData = {
@@ -113,20 +85,17 @@ let appData = {
         });
     },
 
+    makeEmptyInputsWithListeners: function (elem) {
+        elem.querySelectorAll('input').forEach(function (item) {
+            item.value = '';
+        });
+        withotEngSymbols(elem.querySelector('[placeholder="Наименование"]'));
+        approvedDigits(elem.querySelector('[placeholder="Сумма"]'));
+    },
+
     addExpensesBlock: function () {
         const cloneExpensesItem = expensesItems[0].cloneNode(true);
-
-        const nameInput = cloneExpensesItem.querySelector('[placeholder="Наименование"]');
-        const sumInput = cloneExpensesItem.querySelector('[placeholder="Сумма"]');
-        nameInput.value = '';
-        sumInput.value = '';
-        nameInput.addEventListener('input', function (event) {
-            checkRusLetters(event, nameInput);
-        });
-        sumInput.addEventListener('input', function (event) {
-            checkDigits(event, sumInput);
-        });
-
+        appData.makeEmptyInputsWithListeners(cloneExpensesItem);
         expensesItems[0].parentNode.insertBefore(cloneExpensesItem, btnExpensesPlus);
         expensesItems = document.querySelectorAll('.expenses-items');
         if (expensesItems.length === 3) {
@@ -145,18 +114,7 @@ let appData = {
 
     addIncomeBlock: function () {
         const cloneIncomeItem = incomeItems[0].cloneNode(true);
-
-        const nameInput = cloneIncomeItem.querySelector('[placeholder="Наименование"]');
-        const sumInput = cloneIncomeItem.querySelector('[placeholder="Сумма"]');
-        nameInput.value = '';
-        sumInput.value = '';
-        nameInput.addEventListener('input', function (event) {
-            checkRusLetters(event, nameInput);
-        });
-        sumInput.addEventListener('input', function (event) {
-            checkDigits(event, sumInput);
-        });
-
+        appData.makeEmptyInputsWithListeners(cloneIncomeItem);
         incomeItems[0].parentNode.insertBefore(cloneIncomeItem, btnIncomePlus);
         incomeItems = document.querySelectorAll('.income-items');
         if (incomeItems.length === 3) {
@@ -265,5 +223,9 @@ periodSelect.addEventListener('input', function () {
 });
 startButton.addEventListener('click', appData.start);
 startButton.setAttribute('disabled', 'true');
-pholderName();
-pholderSum();
+document.querySelectorAll('.data [placeholder="Сумма"]').forEach(function (item) {
+    approvedDigits(item);
+});
+document.querySelectorAll('.data [placeholder="Наименование"]').forEach(function (item) {
+    withotEngSymbols(item);
+});
