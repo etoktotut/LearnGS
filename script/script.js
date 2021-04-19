@@ -106,7 +106,6 @@ class AppData {
         periodAmount.textContent = 1;
     }
     showResult() {
-        const _this = this;
         budgetMonthValue.value = this.budgetMonth;
         budgetDayValue.value = this.budgetDay;
         expensesMonthValue.value = this.expensesMonth;
@@ -115,7 +114,7 @@ class AppData {
         targetMonthValue.value = this.getTargetMonth();
         incomePeriodValue.value = this.calcSavedMoney();
         periodSelect.addEventListener('input', () => {
-            incomePeriodValue.value = _this.calcSavedMoney();
+            incomePeriodValue.value = this.calcSavedMoney();
         });
     }
 
@@ -246,8 +245,8 @@ class AppData {
             periodAmount.textContent = periodSelect.value;
         });
 
-        btnReset.addEventListener('click', () => { this.reset(); });
-        startButton.addEventListener('click', () => { this.start(); });
+        btnReset.addEventListener('click', () => this.reset());
+        startButton.addEventListener('click', () => this.start());
         startButton.setAttribute('disabled', 'true'); //поле зарплаты пустое, нам нечего рассчитывать
     }
 }
