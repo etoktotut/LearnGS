@@ -48,9 +48,10 @@ class AppData {
 
     start() {
         this.budget = +salaryAmount.value;
-        this.getExpenses();
+        // this.getExpenses();
+        // this.getIncome();
+        this.getExpInc();
         this.getExpensesMonth();
-        this.getIncome();
         this.getIncomeMonth();
         this.getAddExpenses();
         this.getAddIncome();
@@ -106,7 +107,6 @@ class AppData {
         periodAmount.textContent = 1;
     }
     showResult() {
-        const _this = this;
         budgetMonthValue.value = this.budgetMonth;
         budgetDayValue.value = this.budgetDay;
         expensesMonthValue.value = this.expensesMonth;
@@ -115,45 +115,58 @@ class AppData {
         targetMonthValue.value = this.getTargetMonth();
         incomePeriodValue.value = this.calcSavedMoney();
         periodSelect.addEventListener('input', () => {
-            incomePeriodValue.value = _this.calcSavedMoney();
+            incomePeriodValue.value = this.calcSavedMoney();
         });
     }
 
-    addExpensesBlock() {
-        const cloneExpensesItem = expensesItems[0].cloneNode(true); //см роедыдущий урок
-        expensesItems[0].parentNode.insertBefore(cloneExpensesItem, btnExpensesPlus);
-        expensesItems = document.querySelectorAll('.expenses-items');
-        if (expensesItems.length === 3) {
-            btnExpensesPlus.setAttribute('style', 'display: none;');
+    withotEngSymbols(elem) {
+        elem.addEventListener('input', () => {
+            elem.value = elem.value.replace(/[^а-яёА-ЯЁ\.\;\,\:\-_\?\!\(\)\ \"]/gi, '');
+        });
+    }
+
+    approvedDigits(elem) {
+        elem.addEventListener('input', function (event) {
+            elem.value = elem.value.replace(/\D/g, '');
+        });
+    }
+
+    makeEmptyInputsWithListeners(elem) {
+        elem.querySelectorAll('input').forEach((item) => {
+            item.value = '';
+        });
+        this.withotEngSymbols(elem.querySelector('[placeholder="Наименование"]'));
+        this.approvedDigits(elem.querySelector('[placeholder="Сумма"]'));
+    }
+
+    addBlock(event) {
+        const strClass = event.target.parentNode.className;
+        let itemsForClone = document.querySelectorAll(`.${strClass}-items`);
+        const cloneItem = itemsForClone[0].cloneNode(true);
+        // вот тут appData - и как избавиться от нее - не понимаю
+        this.makeEmptyInputsWithListeners(cloneItem);
+        itemsForClone[0].parentNode.insertBefore(cloneItem, event.target);
+        itemsForClone = document.querySelectorAll(`.${strClass}-items`);
+        if (itemsForClone.length === 3) {
+            event.target.setAttribute('style', 'display: none;');
         }
-    }
 
-    getExpenses() {
-        expensesItems.forEach((item) => {
-            const itemExpenses = item.querySelector('.expenses-title').value;
-            const cashExpenses = item.querySelector('.expenses-amount').value;
-            if (itemExpenses !== '' && cashExpenses !== '') {
-                this.expenses[itemExpenses] = +cashExpenses;
-            }
-        });
-    }
-
-    addIncomeBlock() {
-        const cloneIncomeItem = incomeItems[0].cloneNode(true);
-        incomeItems[0].parentNode.insertBefore(cloneIncomeItem, btnIncomePlus);
         incomeItems = document.querySelectorAll('.income-items');
-        if (incomeItems.length === 3) {
-            btnIncomePlus.setAttribute('style', 'display: none;');
-        }
+        expensesItems = document.querySelectorAll('.expenses-items');
     }
-    getIncome() {
-        incomeItems.forEach((item) => {
-            const itemIncome = item.querySelector('.income-title').value;
-            const cashIncome = item.querySelector('.income-amount').value;
-            if (itemIncome !== '' && cashIncome !== '') {
-                this.income[itemIncome] = +cashIncome;
+
+    getExpInc() {
+        const count = item => {
+            const startStr = item.className.split('-')[0];
+            console.log(startStr);
+            const itemTitle = item.querySelector(`.${startStr}-title`).value;
+            const itemAmount = item.querySelector(`.${startStr}-amount`).value;
+            if (itemTitle !== '' && itemAmount !== '') {
+                this[startStr][itemTitle] = itemAmount;
             }
-        });
+        };
+        expensesItems.forEach(count);
+        incomeItems.forEach(count);
     }
 
     getIncomeMonth() {
@@ -161,6 +174,14 @@ class AppData {
         for (let key in this.income) {
             this.incomeMonth += +this.income[key];
         }
+    }
+
+    getExpensesMonth() {
+        this.expensesMonth = 0;
+        for (let key in this.expenses) {
+            this.expensesMonth += +this.expenses[key];
+        }
+        return;
     }
 
     getAddExpenses() {
@@ -181,13 +202,7 @@ class AppData {
             }
         });
     }
-    getExpensesMonth() {
-        this.expensesMonth = 0;
-        for (let key in this.expenses) {
-            this.expensesMonth += this.expenses[key];
-        }
-        return;
-    }
+
 
     getBudget() {
         this.budgetMonth = this.budget + this.incomeMonth - this.expensesMonth;
@@ -240,17 +255,24 @@ class AppData {
             }
         });
 
-        btnExpensesPlus.addEventListener('click', this.addExpensesBlock);
-        btnIncomePlus.addEventListener('click', this.addIncomeBlock);
+        btnExpensesPlus.addEventListener('click', this.addBlock.bind(this));
+        btnIncomePlus.addEventListener('click', this.addBlock.bind(this));
         periodSelect.addEventListener('input', () => {
             periodAmount.textContent = periodSelect.value;
         });
 
-        btnReset.addEventListener('click', () => { this.reset(); });
-        startButton.addEventListener('click', () => { this.start(); });
-        startButton.setAttribute('disabled', 'true'); //поле зарплаты пустое, нам нечего рассчитывать
+        btnReset.addEventListener('click', () => this.reset());
+        startButton.addEventListener('click', () => this.start());
+        startButton.setAttribute('disabled', 'true');
+        document.querySelectorAll('.data [placeholder="Сумма"]').forEach((item) => {
+            this.approvedDigits(item);
+        });
+        document.querySelectorAll('.data [placeholder="Наименование"]').forEach((item) => {
+            this.withotEngSymbols(item);
+        });
     }
 }
+
 
 const appData = new AppData();
 appData.eventsListeners();
