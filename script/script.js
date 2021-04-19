@@ -53,8 +53,9 @@ class AppData {
         this.getExpInc();
         this.getExpensesMonth();
         this.getIncomeMonth();
-        this.getAddExpenses();
-        this.getAddIncome();
+        // this.getAddExpenses();
+        // this.getAddIncome();
+        this.getAddIncExp();
         this.getBudget();
         // appData.getInfoDeposit();
         this.showResult();
@@ -143,14 +144,13 @@ class AppData {
         const strClass = event.target.parentNode.className;
         let itemsForClone = document.querySelectorAll(`.${strClass}-items`);
         const cloneItem = itemsForClone[0].cloneNode(true);
-        // вот тут appData - и как избавиться от нее - не понимаю
         this.makeEmptyInputsWithListeners(cloneItem);
         itemsForClone[0].parentNode.insertBefore(cloneItem, event.target);
         itemsForClone = document.querySelectorAll(`.${strClass}-items`);
         if (itemsForClone.length === 3) {
             event.target.setAttribute('style', 'display: none;');
         }
-
+        // вот тут некрасиво
         incomeItems = document.querySelectorAll('.income-items');
         expensesItems = document.querySelectorAll('.expenses-items');
     }
@@ -158,7 +158,6 @@ class AppData {
     getExpInc() {
         const count = item => {
             const startStr = item.className.split('-')[0];
-            console.log(startStr);
             const itemTitle = item.querySelector(`.${startStr}-title`).value;
             const itemAmount = item.querySelector(`.${startStr}-amount`).value;
             if (itemTitle !== '' && itemAmount !== '') {
@@ -184,25 +183,20 @@ class AppData {
         return;
     }
 
-    getAddExpenses() {
-        const addExpenses = additionalExpensesItem.value.split(',');
-        addExpenses.forEach((item) => {
+    getAddIncExp() {
+        // набивка переданного массива переданным значением
+        const pushArr = (item, strArr) => {
             item = item.trim();
             if (item !== '') {
-                this.addExpenses.push(item);
+                strArr.push(item);
             }
-        });
-    }
+        };
+        //
+        const addExpenses = additionalExpensesItem.value.split(',');
+        addExpenses.forEach((item) => pushArr(item, this.addExpenses));
 
-    getAddIncome() {
-        additionalIncomeItem.forEach((item) => {
-            const itemValue = item.value.trim();
-            if (itemValue !== '') {
-                this.addIncome.push(itemValue);
-            }
-        });
+        additionalIncomeItem.forEach((item) => pushArr(item.value, this.addIncome));
     }
-
 
     getBudget() {
         this.budgetMonth = this.budget + this.incomeMonth - this.expensesMonth;
