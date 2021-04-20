@@ -105,7 +105,9 @@ class AppData {
         });
         btnExpensesPlus.setAttribute('style', 'display: block ;');
         btnIncomePlus.setAttribute('style', 'display: block ;');
-        depositCheck.checked = false;
+
+        this.depositReset();
+
         periodSelect.value = 1;
         periodAmount.textContent = 1;
     }
@@ -234,7 +236,11 @@ class AppData {
     getInfoDeposit() {
         if (this.deposit) {
             this.percentDeposit = depositPercent.value;
+            console.log('this.percentDeposit: ', this.percentDeposit);
             this.moneyDeposit = depositAmount.value;
+            console.log('this.moneyDeposit: ', this.moneyDeposit);
+
+
         }
 
     }
@@ -242,10 +248,21 @@ class AppData {
     changePercent() {
         const valueSelect = this.value;
         if (valueSelect === 'other') {
+            startButton.setAttribute('disabled', 'true');
             depositPercent.style.display = 'inline-block';
-
-
+            depositPercent.addEventListener('input', () => {
+                depositPercent.value = depositPercent.value.replace(/\D/g, '');
+                if (depositPercent.value > 100) {
+                    startButton.setAttribute('disabled', 'true');
+                    depositPercent.value = '';
+                    alert("Введите корректное значение в поле проценты");
+                } else if (depositPercent.value !== '') {
+                    startButton.removeAttribute('disabled');
+                }
+            }
+            );
         } else {
+            startButton.removeAttribute('disabled');
             depositPercent.style.display = 'none';
             depositPercent.value = valueSelect;
         }
@@ -261,15 +278,20 @@ class AppData {
             depositBank.addEventListener('change', this.changePercent);
 
         } else {
-            depositBank.style.display = 'none';
-            depositAmount.style.display = 'none';
-            depositBank.value = '';
-            depositAmount.value = '';
-            depositPercent.value = '';
-            this.deposit = false;
-            depositBank.removeEventListener('change', this.changePercent);
-
+            this.depositReset();
         }
+    }
+
+    depositReset() {
+        depositCheck.checked = false;
+        depositBank.style.display = 'none';
+        depositAmount.style.display = 'none';
+        depositPercent.style.display = 'none';
+        depositBank.value = '';
+        depositAmount.value = '';
+        depositPercent.value = '';
+        this.deposit = false;
+        depositBank.removeEventListener('change', this.changePercent);
     }
 
     eventsListeners() {
