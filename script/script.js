@@ -213,17 +213,17 @@ class AppData {
         return Math.ceil(targetAmount.value / this.budgetMonth);
     }
 
-    thistStatusIncome() {
-        if (this.budgetDay >= 1200) {
-            return 'У вас высокий уровень дохода';
-        } else if (this.budgetDay >= 600) {
-            return 'У вас средний уровень дохода';
-        } else if (this.budgetDay >= 0) {
-            return 'К сожалению у вас уровень дохода ниже среднего';
-        } else {
-            return 'Что то пошло не так';
-        }
-    }
+    // thisStatusIncome() {
+    //     if (this.budgetDay >= 1200) {
+    //         return 'У вас высокий уровень дохода';
+    //     } else if (this.budgetDay >= 600) {
+    //         return 'У вас средний уровень дохода';
+    //     } else if (this.budgetDay >= 0) {
+    //         return 'К сожалению у вас уровень дохода ниже среднего';
+    //     } else {
+    //         return 'Что то пошло не так';
+    //     }
+    // }
 
 
     calcSavedMoney() {
@@ -248,6 +248,7 @@ class AppData {
     changePercent() {
         const valueSelect = this.value;
         if (valueSelect === 'other') {
+            depositPercent.value = '';
             startButton.setAttribute('disabled', 'true');
             depositPercent.style.display = 'inline-block';
             depositPercent.addEventListener('input', () => {
