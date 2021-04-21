@@ -1,4 +1,4 @@
-"use strict";
+//"use strict";
 
 const startButton = document.getElementById('start');
 const btnReset = document.getElementById('cancel');
@@ -19,9 +19,6 @@ const targetMonthValue = document.getElementsByClassName('target_month-value')[0
 // оставшиеся поля
 const salaryAmount = document.querySelector('.salary-amount');
 let incomeItems = document.querySelectorAll('.income-items');
-const incomeTitle = document.querySelector('.income-title');
-// const incomeAmount = document.querySelector('.income-amount');
-const expensesTitle = document.querySelector('.expenses-title');
 let expensesItems = document.querySelectorAll('.expenses-items');
 const additionalExpensesItem = document.querySelector('.additional_expenses-item');
 const depositAmount = document.querySelector('.deposit-amount');
@@ -65,7 +62,7 @@ class AppData {
     }
 
     blockAndShowBtnReset() {
-        document.querySelectorAll('.data input[type="text"]').forEach((item) => {
+        document.querySelectorAll('.data input[type="text"]').forEach(item => {
             item.setAttribute('disabled', 'true');
         });
         startButton.setAttribute('style', 'display: none;');
@@ -103,7 +100,7 @@ class AppData {
         incomeItems = document.querySelectorAll('.income-items');
         expensesItems = document.querySelectorAll('.expenses-items');
 
-        document.querySelectorAll('input[type="text"]').forEach((item) => {
+        document.querySelectorAll('input[type="text"]').forEach(item => {
             item.value = '';
             item.removeAttribute('disabled');
         });
@@ -130,20 +127,18 @@ class AppData {
 
     withotEngSymbols(elem) {
         elem.addEventListener('input', () => {
-            elem.value = elem.value.replace(/[^а-яёА-ЯЁ\.\;\,\:\-_\?\!\(\)\ \"]/gi, '');
+            elem.value = elem.value.replace(/[^а-яёА-ЯЁ.;,:\-_?!() "]/gi, '');
         });
     }
 
     approvedDigits(elem) {
-        elem.addEventListener('input', function (event) {
+        elem.addEventListener('input', () => {
             elem.value = elem.value.replace(/\D/g, '');
         });
     }
 
     makeEmptyInputsWithListeners(elem) {
-        elem.querySelectorAll('input').forEach((item) => {
-            item.value = '';
-        });
+        elem.querySelectorAll('input').forEach(item => item.value = '');
         this.withotEngSymbols(elem.querySelector('[placeholder="Наименование"]'));
         this.approvedDigits(elem.querySelector('[placeholder="Сумма"]'));
     }
@@ -178,14 +173,14 @@ class AppData {
 
     getIncomeMonth() {
         this.incomeMonth = 0;
-        for (let key in this.income) {
+        for (const key in this.income) {
             this.incomeMonth += +this.income[key];
         }
     }
 
     getExpensesMonth() {
         this.expensesMonth = 0;
-        for (let key in this.expenses) {
+        for (const key in this.expenses) {
             this.expensesMonth += +this.expenses[key];
         }
         return;
@@ -201,9 +196,9 @@ class AppData {
         };
         //
         const addExpenses = additionalExpensesItem.value.split(',');
-        addExpenses.forEach((item) => pushArr(item, this.addExpenses));
+        addExpenses.forEach(item => pushArr(item, this.addExpenses));
 
-        additionalIncomeItem.forEach((item) => pushArr(item.value, this.addIncome));
+        additionalIncomeItem.forEach(item => pushArr(item.value, this.addIncome));
     }
 
     getBudget() {
@@ -240,11 +235,7 @@ class AppData {
     getInfoDeposit() {
         if (this.deposit) {
             this.percentDeposit = depositPercent.value;
-            console.log('this.percentDeposit: ', this.percentDeposit);
             this.moneyDeposit = depositAmount.value;
-            console.log('this.moneyDeposit: ', this.moneyDeposit);
-
-
         }
 
     }
@@ -297,7 +288,6 @@ class AppData {
         this.deposit = false;
         this.percentDeposit = 0;
         this.moneyDeposit = 0;
-
         depositBank.removeEventListener('change', this.changePercent);
     }
 
@@ -319,12 +309,8 @@ class AppData {
         btnReset.addEventListener('click', () => this.reset());
         startButton.addEventListener('click', () => this.start());
         startButton.setAttribute('disabled', 'true');
-        document.querySelectorAll('.data [placeholder="Сумма"]').forEach((item) => {
-            this.approvedDigits(item);
-        });
-        document.querySelectorAll('.data [placeholder="Наименование"]').forEach((item) => {
-            this.withotEngSymbols(item);
-        });
+        document.querySelectorAll('.data [placeholder="Сумма"]').forEach(item => this.approvedDigits(item));
+        document.querySelectorAll('.data [placeholder="Наименование"]').forEach((item) => this.withotEngSymbols(item));
         depositCheck.addEventListener('change', this.depositHandler.bind(this));
     }
 }
