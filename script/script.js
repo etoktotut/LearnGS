@@ -87,8 +87,7 @@ class AppData {
         this.addExpenses = [];
         this.budget = 0;
         this.deposit = false;
-        this.percentDeposit = 0;
-        this.moneyDeposit = 0;
+
         this.budgetDay = 0;
         this.budgetMonth = 0;
         this.expensesMonth = 0;
@@ -96,9 +95,14 @@ class AppData {
         for (let i = incomeItems.length; i > 1; i--) {
             incomeItems[i - 1].remove();
         }
+
         for (let i = expensesItems.length; i > 1; i--) {
             expensesItems[i - 1].remove();
         }
+
+        incomeItems = document.querySelectorAll('.income-items');
+        expensesItems = document.querySelectorAll('.expenses-items');
+
         document.querySelectorAll('input[type="text"]').forEach((item) => {
             item.value = '';
             item.removeAttribute('disabled');
@@ -260,8 +264,7 @@ class AppData {
                 } else if (depositPercent.value !== '') {
                     startButton.removeAttribute('disabled');
                 }
-            }
-            );
+            });
         } else {
             startButton.removeAttribute('disabled');
             depositPercent.style.display = 'none';
@@ -292,6 +295,9 @@ class AppData {
         depositAmount.value = '';
         depositPercent.value = '';
         this.deposit = false;
+        this.percentDeposit = 0;
+        this.moneyDeposit = 0;
+
         depositBank.removeEventListener('change', this.changePercent);
     }
 
