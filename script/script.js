@@ -46,20 +46,120 @@ class AppData {
 
     start() {
         this.budget = +salaryAmount.value;
-        // this.getExpenses();
-        // this.getIncome();
         this.getExpInc();
         this.getExpensesMonth();
         this.getIncomeMonth();
-        // this.getAddExpenses();
-        // this.getAddIncome();
         this.getAddIncExp();
         this.getInfoDeposit();
         this.getBudget();
-        // appData.getInfoDeposit();
         this.showResult();
         this.blockAndShowBtnReset();
+        this.saveToStorage();
     }
+
+    saveToStorage() {
+        const inputList = document.querySelectorAll('.result input');
+        inputList.forEach(item => localStorage.setItem(item.className, item.value));
+        inputList.forEach(item => {
+            this.setCookie(item.className, item.value);
+        });
+        this.setCookie('isLoad', true);
+
+
+
+    }
+
+    loadFromStorage() {
+        const inputList = document.querySelectorAll('.result input');
+        inputList.forEach(item => {
+            // const temp = localStorage.getItem(item.className);
+            // if (temp !== null) {
+            //     item.value = temp;
+            // }
+            const temp = this.getCookie(encodeURIComponent(item.className));
+
+            if (typeof temp !== 'undefined') {
+                item.value = temp;
+            }
+
+        });
+    }
+
+    clearStorage() {
+        const inputList = document.querySelectorAll('.result input');
+
+        inputList.forEach(item => {
+            if (localStorage.getItem(item.className) !== null) {
+                localStorage.removeItem(item.className);
+            }
+            this.deleteCookie(item.className);
+
+        });
+        this.setCookie('isLoad', false);
+    }
+
+    cookieWasBroken() {
+        const inputList = document.querySelectorAll('.result input');
+        let result = false;
+        if (this.getCookie('isLoad') === 'true') {
+            inputList.forEach(item => {
+                const temp = this.getCookie(encodeURIComponent(item.className));
+                if ((typeof temp === 'undefined') || (temp !== localStorage.getItem(item.className))) {
+                    result = true;
+                }
+            });
+        }
+        //console.log('Cookie was broken', result);
+        if (result) {
+            this.reset();
+        }
+    }
+
+
+
+
+    getCookie(name) {
+        let matches = document.cookie.match(new RegExp(
+            "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+        ));
+        return matches ? decodeURIComponent(matches[1]) : undefined;
+    }
+
+    setCookie(name, value, options = {}) {
+
+        options = {
+            path: '/',
+            // при необходимости добавьте другие значения по умолчанию
+            ...options
+        };
+
+        if (options.expires instanceof Date) {
+            options.expires = options.expires.toUTCString();
+        }
+
+        let updatedCookie = encodeURIComponent(name) + "=" + encodeURIComponent(value);
+
+        for (let optionKey in options) {
+            updatedCookie += "; " + optionKey;
+            let optionValue = options[optionKey];
+            if (optionValue !== true) {
+                updatedCookie += "=" + optionValue;
+            }
+        }
+
+        document.cookie = updatedCookie;
+    }
+
+    deleteCookie(name) {
+        this.setCookie(name, "", {
+            'max-age': -1
+        });
+    }
+
+
+
+
+
 
     blockAndShowBtnReset() {
         document.querySelectorAll('.data input[type="text"]').forEach(item => {
@@ -111,7 +211,9 @@ class AppData {
 
         periodSelect.value = 1;
         periodAmount.textContent = 1;
+        this.clearStorage();
     }
+
     showResult() {
         budgetMonthValue.value = this.budgetMonth;
         budgetDayValue.value = this.budgetDay;
@@ -312,6 +414,10 @@ class AppData {
         document.querySelectorAll('.data [placeholder="Сумма"]').forEach(item => this.approvedDigits(item));
         document.querySelectorAll('.data [placeholder="Наименование"]').forEach((item) => this.withotEngSymbols(item));
         depositCheck.addEventListener('change', this.depositHandler.bind(this));
+
+        this.cookieWasBroken();
+        this.loadFromStorage();
+
     }
 }
 
