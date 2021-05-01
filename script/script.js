@@ -74,6 +74,9 @@ class AppData {
                 item.value = temp;
             }
         });
+        if (this.getCookie('isLoad') === 'true') {
+            this.blockAndShowBtnReset();
+        }
     }
 
     clearStorage() {
