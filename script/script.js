@@ -64,36 +64,25 @@ class AppData {
             this.setCookie(item.className, item.value);
         });
         this.setCookie('isLoad', true);
-
-
-
     }
 
     loadFromStorage() {
         const inputList = document.querySelectorAll('.result input');
         inputList.forEach(item => {
-            // const temp = localStorage.getItem(item.className);
-            // if (temp !== null) {
-            //     item.value = temp;
-            // }
             const temp = this.getCookie(encodeURIComponent(item.className));
-
             if (typeof temp !== 'undefined') {
                 item.value = temp;
             }
-
         });
     }
 
     clearStorage() {
         const inputList = document.querySelectorAll('.result input');
-
         inputList.forEach(item => {
             if (localStorage.getItem(item.className) !== null) {
                 localStorage.removeItem(item.className);
             }
             this.deleteCookie(item.className);
-
         });
         this.setCookie('isLoad', false);
     }
